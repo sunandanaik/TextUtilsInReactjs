@@ -2,36 +2,41 @@ import React, { useState } from 'react';
 
 
 function Textform(props) {
-    const [text, setText] = useState('Enter Text here');
+    const [text, setText] = useState('');
 
     const handleUpClick = () => {
         console.log("button clicked");
         let newText = text.toUpperCase();
         setText(newText);
+        props.showAlert("Converted to Uppercase","success");
     }
     const handleDownClick = () => {
         console.log("button clicked");
         let newText = text.toLowerCase();
         setText(newText);
+        props.showAlert("Converted to Lowercase","success");
     }
     const handleClearClick = () => {
         //console.log("button clicked");
         let newText = '';
         setText(newText);
+        props.showAlert("Text Cleared","success");
     }
     const handleCopyClick = () => {
-        //console.log("button clicked");
+        console.log("Copy button clicked");
         var newText = document.getElementById("myBox");
         newText.select();
         navigator.clipboard.writeText(text.value);
+        props.showAlert("Copied to Clipboard","success");
         
     }
     const handleExtraSpace=()=>{
         let newText = text.split(/[ ]+/);
         setText(newText.join(" "));
+        props.showAlert("Extra spaces removed","success");
     }
     const handleOnChange = (event) => {
-        console.log("On change");
+        // console.log("On change");
         setText(event.target.value);
     }
     return (
@@ -54,10 +59,11 @@ function Textform(props) {
             </div>
             <div className="container my-2" style={{color:props.mode==='dark'?'white':'black'}}>
                 <h1>Your Text Summary</h1>
-                <p>{text.split(" ").length} words and {text.length} characters</p>
+                <p>{text.split(" ").filter(function(n){
+                    return n!==''}).length} words and {text.length} characters</p>
                 <p>{0.008 * text.split(" ").length} Minutes read</p>
                 <h2>Preview</h2>
-                <p>{text}</p>
+                <p>{text.length > 0 ? text:"Enter Something to Preview here"}</p>
             </div>
         </>
     )
