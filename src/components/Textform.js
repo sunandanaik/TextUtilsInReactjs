@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 
 function Textform(props) {
+    
     const [text, setText] = useState('');
 
     const handleUpClick = () => {
@@ -23,10 +24,10 @@ function Textform(props) {
         props.showAlert("Text Cleared","success");
     }
     const handleCopyClick = () => {
-        console.log("Copy button clicked");
-        var newText = document.getElementById("myBox");
-        newText.select();
-        navigator.clipboard.writeText(text.value);
+        // console.log("Copy button clicked");
+        // var newText = document.getElementById("myBox");
+        // newText.select();
+        navigator.clipboard.writeText(text);
         props.showAlert("Copied to Clipboard","success");
         
     }
@@ -42,28 +43,28 @@ function Textform(props) {
     return (
         <>
             <div className="container" style={{color:props.mode==='dark'?'white':'black'}}>
-                <h1>{props.heading}</h1>
+                <h2 className="mb-2">{props.heading}</h2>
 
                 <div className="mb-3">
 
                     <textarea value={text} onChange={handleOnChange} name="myBox" id="myBox" cols="30" rows="10"
-                     style={{color:props.mode==='dark'?'white':'black',backgroundColor:props.mode ==='dark'?'grey':'white',margin: '0px', width: '667px', height: '275px' }}></textarea>
+                     style={{color:props.mode==='dark'?'white':'black',backgroundColor:props.mode ==='dark'?'#13466e':'white',margin: '0px', width: '667px', height: '275px' }}></textarea>
 
                 </div>
 
-                <button type="submit" className="btn btn-primary mx-2" onClick={handleUpClick}>Convert To Uppercase</button>
-                <button type="submit" className="btn btn-primary mx-2" onClick={handleDownClick}>Convert To Lowercase</button>
-                <button type="submit" className="btn btn-primary mx-2" onClick={handleClearClick}>Clear Text</button>
-                <button type="submit" className="btn btn-primary mx-2" onClick={handleCopyClick}>Copy Text</button>
-                <button type="submit" className="btn btn-primary mx-2" onClick={handleExtraSpace}>Remove Extra Spaces</button>
+                <button disabled={text.length===0} type="submit" className="btn btn-primary mx-2 my-2" onClick={handleUpClick}>Convert To Uppercase</button>
+                <button disabled={text.length===0} type="submit" className="btn btn-primary mx-2 my-2" onClick={handleDownClick}>Convert To Lowercase</button>
+                <button disabled={text.length===0} type="submit" className="btn btn-primary mx-2 my-2" onClick={handleClearClick}>Clear Text</button>
+                <button disabled={text.length===0} type="submit" className="btn btn-primary mx-2 my-2" onClick={handleCopyClick}>Copy Text</button>
+                <button disabled={text.length===0} type="submit" className="btn btn-primary mx-2 my-2" onClick={handleExtraSpace}>Remove Extra Spaces</button>
             </div>
             <div className="container my-2" style={{color:props.mode==='dark'?'white':'black'}}>
                 <h1>Your Text Summary</h1>
-                <p>{text.split(" ").filter(function(n){
+                <p>{text.split(/\s+/).filter(function(n){
                     return n!==''}).length} words and {text.length} characters</p>
-                <p>{0.008 * text.split(" ").length} Minutes read</p>
+                <p>{0.008 * text.split(" ").filter((ele)=>{return ele.length!==0}).length} Minutes read</p>
                 <h2>Preview</h2>
-                <p>{text.length > 0 ? text:"Enter Something to Preview here"}</p>
+                <p>{text.length > 0 ? text:"Nothing to Preview"}</p>
             </div>
         </>
     )
